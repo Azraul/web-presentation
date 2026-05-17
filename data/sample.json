@@ -30,11 +30,11 @@
       "heading": "From Concept to Production",
       "paragraphs": [
         "This presentation demonstrates a modular, data-driven architecture designed for rapid tailoring. Every scene, modal, and color is defined in a single JSON file — no HTML templates, no duplication.",
-        "Interactive <span class=\"keyword\" data-link=\"s1-bubble\">bubble modals</span> provide drill-down detail without leaving the flow. The system supports <span class=\"keyword\" data-link=\"s1-multi\">multiple roles</span> by swapping the data file, while the rendering engine stays identical."
+        "Interactive <span class=\"keyword\" data-link=\"scene-1-a\">bubble modals</span> provide drill-down detail without leaving the flow. The system supports <span class=\"keyword\" data-link=\"scene-1-b\">multiple roles</span> by swapping the data file, while the rendering engine stays identical."
       ],
       "bubbles": [
-        { "id": "s1-bubble", "label": "Bubble<br>Modals", "modal": "modal-bubble" },
-        { "id": "s1-multi", "label": "Multi-Role<br>Ready", "modal": "modal-multi" }
+        { "id": "scene-1-a", "label": "Bubble<br>Modals", "modal": "modal-bubble" },
+        { "id": "scene-1-b", "label": "Multi-Role<br>Ready", "modal": "modal-multi" }
       ]
     },
     {
@@ -46,12 +46,12 @@
       "highlight": "Data-Driven<br>Engine",
       "heading": "One Renderer, Any Role",
       "paragraphs": [
-        "The <span class=\"keyword\" data-link=\"s2-engine\">renderer</span> reads a single JSON file and builds all scenes, modals, and navigation dynamically. Scene types include hero, standard, reversed, pipeline, and credits — each constructed by a dedicated builder function.",
-        "The line-drawing engine connects <span class=\"keyword\" data-link=\"s2-keywords\">keywords</span> in the text to interactive bubbles in real time, creating a visual map of how concepts link together."
+        "The <span class=\"keyword\" data-link=\"scene-2-a\">renderer</span> reads a single JSON file and builds all scenes, modals, and navigation dynamically. Scene types include hero, standard, reversed, pipeline, and credits — each constructed by a dedicated builder function.",
+        "The line-drawing engine connects <span class=\"keyword\" data-link=\"scene-2-b\">keywords</span> in the text to interactive bubbles in real time, creating a visual map of how concepts link together."
       ],
       "bubbles": [
-        { "id": "s2-engine", "label": "Renderer<br>Engine", "modal": "modal-engine" },
-        { "id": "s2-keywords", "label": "Keyword<br>Linking", "modal": "modal-keywords" }
+        { "id": "scene-2-a", "label": "Renderer<br>Engine", "modal": "modal-engine" },
+        { "id": "scene-2-b", "label": "Keyword<br>Linking", "modal": "modal-keywords" }
       ]
     },
     {

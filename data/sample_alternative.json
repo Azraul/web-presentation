@@ -33,12 +33,12 @@
       "highlight": "Made with<br>Love 💖",
       "heading": "The Cutest Renderer",
       "paragraphs": [
-        "This engine was <span class=\"keyword\" data-link=\"s1-bow\">powered by bows</span> and built with friendship. Every scene sparkles with its own personality — no two JSON files need to look alike.",
-        "The <span class=\"keyword\" data-link=\"s1-flower\">kawaii architecture</span> keeps things simple: one renderer, infinite cuteness. Swap the data file and the whole world changes color."
+        "This engine was <span class=\"keyword\" data-link=\"scene-1-a\">powered by bows</span> and built with friendship. Every scene sparkles with its own personality — no two JSON files need to look alike.",
+        "The <span class=\"keyword\" data-link=\"scene-1-b\">kawaii architecture</span> keeps things simple: one renderer, infinite cuteness. Swap the data file and the whole world changes color."
       ],
       "bubbles": [
-        { "id": "s1-bow", "label": "Bow<br>Power", "modal": "modal-bow" },
-        { "id": "s1-flower", "label": "Flower<br>Friends", "modal": "modal-flower" }
+        { "id": "scene-1-a", "label": "Bow<br>Power", "modal": "modal-bow" },
+        { "id": "scene-1-b", "label": "Flower<br>Friends", "modal": "modal-flower" }
       ]
     },
     {
@@ -51,12 +51,12 @@
       "highlight": "Pretty in<br>Pink 🌷",
       "heading": "Small Joys, Big Impact",
       "paragraphs": [
-        "The <span class=\"keyword\" data-link=\"s2-joy\">smallest details</span> make the biggest difference. A well-placed bow. A perfectly rounded corner. A gradient that fades like a sunset over candyland.",
-        "This <span class=\"keyword\" data-link=\"s2-craft\">hand-crafted approach</span> means every presentation feels personal — because it is. No templates. No boilerplate. Just heart."
+        "The <span class=\"keyword\" data-link=\"scene-2-a\">smallest details</span> make the biggest difference. A well-placed bow. A perfectly rounded corner. A gradient that fades like a sunset over candyland.",
+        "This <span class=\"keyword\" data-link=\"scene-2-b\">hand-crafted approach</span> means every presentation feels personal — because it is. No templates. No boilerplate. Just heart."
       ],
       "bubbles": [
-        { "id": "s2-joy", "label": "Small<br>Joys", "modal": "modal-joy" },
-        { "id": "s2-craft", "label": "Hand-<br>Crafted", "modal": "modal-craft" }
+        { "id": "scene-2-a", "label": "Small<br>Joys", "modal": "modal-joy" },
+        { "id": "scene-2-b", "label": "Hand-<br>Crafted", "modal": "modal-craft" }
       ]
     },
     {

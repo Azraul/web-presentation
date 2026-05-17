@@ -4,6 +4,70 @@
  * Replaces static scene-section.html and modal-layer.html patterns.
  */
 
+/* ── Helpers ──────────────────────────────────── */
+function makeBubbleId(sceneId, index) {
+  const letter = String.fromCharCode(97 + index);
+  return `${sceneId}-${letter}`;
+}
+
+function buildBubbles(scene, bubbles) {
+  return (bubbles || []).map((b, i) => {
+    const id = b.id || makeBubbleId(scene.id, i);
+    return `<div class="bubble" id="${id}" data-modal="${b.modal}">${b.label}</div>`;
+  }).join('');
+}
+
+function buildModals(modals) {
+  if (!modals) return;
+  const frag = document.createDocumentFragment();
+  Object.entries(modals).forEach(([id, m]) => {
+    const dialog = document.createElement('dialog');
+    dialog.id = id;
+    dialog.innerHTML = `
+      <h3>${m.title}</h3>
+      ${m.body.split('\n').filter(Boolean).map(p => `<p>${p}</p>`).join('')}
+      <button class="close-modal">Close</button>
+    `;
+    frag.appendChild(dialog);
+  });
+  document.body.appendChild(frag);
+}
+
+function setupModalHandlers() {
+  document.addEventListener('click', (e) => {
+    const trigger = e.target.closest('[data-modal]');
+    if (trigger) {
+      e.preventDefault();
+      const modal = document.getElementById(trigger.getAttribute('data-modal'));
+      if (modal) {
+        syncModalAvatar(trigger, modal);
+        modal.showModal();
+      }
+      return;
+    }
+    const closeBtn = e.target.closest('.close-modal');
+    if (closeBtn) {
+      closeBtn.closest('dialog').close();
+    }
+  });
+}
+
+function syncModalAvatar(trigger, modal) {
+  const bubbleImg = trigger.querySelector('img');
+  let modalImg = modal.querySelector('.modal-avatar');
+  if (bubbleImg) {
+    if (!modalImg) {
+      modalImg = document.createElement('img');
+      modalImg.className = 'modal-avatar';
+      modal.prepend(modalImg);
+    }
+    modalImg.src = bubbleImg.src;
+    modalImg.style.display = 'block';
+  } else if (modalImg) {
+    modalImg.style.display = 'none';
+  }
+}
+
 (async function main() {
   try {
     /* ── 1. Load data ─────────────────────────────────── */
@@ -81,51 +145,10 @@
   });
 
   /* ── 4. Build modals ──────────────────────────────── */
-  if (data.modals) {
-    const frag = document.createDocumentFragment();
-    Object.entries(data.modals).forEach(([id, m]) => {
-      const dialog = document.createElement('dialog');
-      dialog.id = id;
-      dialog.innerHTML = `
-        <h3>${m.title}</h3>
-        ${m.body.split('\n').filter(Boolean).map(p => `<p>${p}</p>`).join('')}
-        <button class="close-modal">Close</button>
-      `;
-      frag.appendChild(dialog);
-    });
-    document.body.appendChild(frag);
-  }
+  buildModals(data.modals);
 
   /* ── 5. Modal open/close wiring ──────────────────── */
-  document.addEventListener('click', (e) => {
-    const trigger = e.target.closest('[data-modal]');
-    if (trigger) {
-      e.preventDefault();
-      const modal = document.getElementById(trigger.getAttribute('data-modal'));
-      if (modal) {
-        // Copy avatar from bubble image if present
-        const bubbleImg = trigger.querySelector('img');
-        let modalImg = modal.querySelector('.modal-avatar');
-        if (bubbleImg) {
-          if (!modalImg) {
-            modalImg = document.createElement('img');
-            modalImg.className = 'modal-avatar';
-            modal.prepend(modalImg);
-          }
-          modalImg.src = bubbleImg.src;
-          modalImg.style.display = 'block';
-        } else if (modalImg) {
-          modalImg.style.display = 'none';
-        }
-        modal.showModal();
-      }
-      return;
-    }
-    const closeBtn = e.target.closest('.close-modal');
-    if (closeBtn) {
-      closeBtn.closest('dialog').close();
-    }
-  });
+  setupModalHandlers();
 
   /* ── 6. Tracker ───────────────────────────────────── */
   const tracker = document.getElementById('scene-tracker');
@@ -195,9 +218,7 @@ function buildStandard(section, scene) {
       ${(scene.paragraphs || []).map(p => `<p>${p}</p>`).join('')}
     </div>
     <div class="col col-media">
-      ${(scene.bubbles || []).map(b =>
-        `<div class="bubble" id="${b.id}" data-modal="${b.modal}">${b.label}</div>`
-      ).join('')}
+      ${buildBubbles(scene, scene.bubbles)}
       ${scene.image ? `<img src="${scene.image}" alt="${scene.imageAlt || ''}" class="large-image" />` : ''}
     </div>
   `;
@@ -347,20 +368,23 @@ function drawLinesForScene(scene) {
     const len = path.getTotalLength();
     path.style.strokeDasharray = len;
     path.style.strokeDashoffset = len;
-    requestAnimationFrame(() => {
-      path.style.transition = 'stroke-dashoffset 1.5s ease-in-out';
-      path.style.strokeDashoffset = '0';
-    });
+    // Force reflow so the browser paints the initial hidden state
+    // before we kick off the transition animation.
+    void path.getBoundingClientRect();
+    path.style.transition = 'stroke-dashoffset 1.5s ease-in-out';
+    path.style.strokeDashoffset = '0';
 
     const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
     dot.setAttribute('cx', endX);
     dot.setAttribute('cy', endY);
     dot.setAttribute('r', '4');
-    dot.setAttribute('fill', 'var(--color-accent)');
+    dot.style.fill = 'var(--color-accent)';
     dot.style.opacity = '0';
     dot.style.transition = 'opacity 0.3s ease-in-out 1.2s';
     svgCanvas.appendChild(dot);
-    requestAnimationFrame(() => dot.style.opacity = '1');
+    // Same reflow trick for the dot fade-in
+    void dot.getBoundingClientRect();
+    dot.style.opacity = '1';
   });
 }
 
