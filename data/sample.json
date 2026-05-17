@@ -1,0 +1,150 @@
+{
+  "title": "Portfolio — Sample",
+  "logo": "logo.png",
+  "theme": {
+    "--color-bg": "#f5f7fa",
+    "--color-surface": "#2c3e50",
+    "--color-primary": "#3498db",
+    "--color-accent": "#e67e22",
+    "--color-hover": "#6c9ebd",
+    "--color-text": "#2c3e50",
+    "--bg-gradient": "linear-gradient(to bottom, #e67e22 0%, #3498db 100%)"
+  },
+  "scenes": [
+    {
+      "id": "scene-hero",
+      "type": "hero",
+      "title": "Start",
+      "theme": "dark",
+      "bgClass": "scene-dark",
+      "headline": "AI & Data Portfolio Presentation",
+      "subtitle": "Privacy-first systems · Sovereign infrastructure · Pragmatic leadership"
+    },
+    {
+      "id": "scene-1",
+      "type": "standard",
+      "title": "Approach",
+      "theme": "dark",
+      "bgClass": "scene-dark",
+      "highlight": "Strategic<br>Thinking",
+      "heading": "From Concept to Production",
+      "paragraphs": [
+        "This presentation demonstrates a modular, data-driven architecture designed for rapid tailoring. Every scene, modal, and color is defined in a single JSON file — no HTML templates, no duplication.",
+        "Interactive <span class=\"keyword\" data-link=\"s1-bubble\">bubble modals</span> provide drill-down detail without leaving the flow. The system supports <span class=\"keyword\" data-link=\"s1-multi\">multiple roles</span> by swapping the data file, while the rendering engine stays identical."
+      ],
+      "bubbles": [
+        { "id": "s1-bubble", "label": "Bubble<br>Modals", "modal": "modal-bubble" },
+        { "id": "s1-multi", "label": "Multi-Role<br>Ready", "modal": "modal-multi" }
+      ]
+    },
+    {
+      "id": "scene-2",
+      "type": "reversed",
+      "title": "Architecture",
+      "theme": "dark",
+      "bgClass": "scene-dark",
+      "highlight": "Data-Driven<br>Engine",
+      "heading": "One Renderer, Any Role",
+      "paragraphs": [
+        "The <span class=\"keyword\" data-link=\"s2-engine\">renderer</span> reads a single JSON file and builds all scenes, modals, and navigation dynamically. Scene types include hero, standard, reversed, pipeline, and credits — each constructed by a dedicated builder function.",
+        "The line-drawing engine connects <span class=\"keyword\" data-link=\"s2-keywords\">keywords</span> in the text to interactive bubbles in real time, creating a visual map of how concepts link together."
+      ],
+      "bubbles": [
+        { "id": "s2-engine", "label": "Renderer<br>Engine", "modal": "modal-engine" },
+        { "id": "s2-keywords", "label": "Keyword<br>Linking", "modal": "modal-keywords" }
+      ]
+    },
+    {
+      "id": "scene-3",
+      "type": "pipeline",
+      "title": "Pipeline",
+      "theme": "dark",
+      "bgClass": "scene-dark",
+      "layout": "layout-wide",
+      "headline": "Pipeline Flow",
+      "subtitle": "Visual Process Mapping",
+      "steps": [
+        { "label": "Input", "node": "JSON<br>Data File", "modal": "modal-engine" },
+        { "label": "Engine", "node": "Renderer.js", "modal": "modal-engine" },
+        { "label": "Scenes", "node": "Builder<br>Functions", "modal": "modal-engine" },
+        { "label": "Output", "node": "DOM +<br>Canvas", "modal": "modal-engine" }
+      ]
+    },
+    {
+      "id": "scene-tree",
+      "type": "tree",
+      "title": "Structure",
+      "theme": "dark",
+      "bgClass": "scene-dark",
+      "layout": "layout-wide",
+      "headline": "Team Structure",
+      "subtitle": "How the engine is organized",
+      "tree": [
+        {
+          "label": "Renderer",
+          "children": [
+            {
+              "label": "Builders",
+              "modal": "modal-engine",
+              "children": [
+                { "label": "Standard" },
+                { "label": "Pipeline", "modal": "modal-engine" },
+                { "label": "Tree" },
+                { "label": "Credits" }
+              ]
+            },
+            {
+              "label": "Themes",
+              "children": [
+                { "label": "CSS Vars", "modal": "modal-multi" },
+                { "label": "JSON" }
+              ]
+            },
+            {
+              "label": "Interactivity",
+              "children": [
+                { "label": "Lines", "modal": "modal-keywords" },
+                { "label": "Modals", "modal": "modal-bubble" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "scene-4",
+      "type": "credits",
+      "title": "Credits",
+      "theme": "dark",
+      "bgClass": "scene-dark",
+      "image": "profile_hd.jpg",
+      "imageAlt": "Profile portrait",
+      "paragraphs": [
+        "Built with vanilla JS, CSS custom properties, and the native &lt;dialog&gt; API. No frameworks, no build step.",
+        "Fork this project on GitHub to create your own tailored portfolio presentation."
+      ],
+      "links": [
+        { "text": "GitHub Repository", "url": "https://github.com/your-username/portfolio-presentation" },
+        { "text": "Documentation", "url": "#" }
+      ]
+    }
+  ],
+  "modals": {
+    "modal-bubble": {
+      "title": "Bubble Modals",
+      "body": "Each bubble in the media column is wired to a native &lt;dialog&gt; element. The modal content is defined inline in the JSON data file, making it easy to change or localize without touching HTML."
+    },
+    "modal-multi": {
+      "title": "Multi-Role Ready",
+      "body": "Switch between roles by changing the URL parameter: <code>index.html?role=company-a</code>. Each role gets a complete theme and narrative layer, while the rendering engine stays identical."
+    },
+    "modal-engine": {
+      "title": "Renderer Engine",
+      "body": "The renderer reads JSON and builds everything in a single pass. Scene types are dispatched to builder functions. The line-drawing engine uses SVG paths with cubic Bezier curves to create smooth, animated connections between keywords and bubbles."
+    },
+    "modal-keywords": {
+      "title": "Keyword Linking",
+      "body": "A <b>keyword</b> span with a <code>data-link</code> attribute points to a bubble's ID. The line engine finds both elements, measures their positions, and draws a curved path between them. The animation uses SVG stroke-dashoffset for a clean reveal effect."
+    }
+  }
+}

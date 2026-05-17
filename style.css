@@ -1,0 +1,597 @@
+/* =========================================
+   Generic CSS Variable Theme System
+   All color/styling variables use generic
+   role-agnostic names. Override via JSON.
+   ========================================= */
+:root {
+    --color-bg: #f4f7f8;
+    --color-surface: #003349;
+    --color-primary: #00a99d;
+    --color-accent: #f39c12;
+    --color-hover: #8bb38d;
+    --color-text: #333;
+    --transition-speed: 0.8s;
+    --bg-gradient: linear-gradient(to bottom, var(--color-accent) 0%, var(--color-primary) 100%);
+
+    /* Simple default SVG watermark — a clean hexagon */
+    --svg-default: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='50,5 95,27.5 95,72.5 50,95 5,72.5 5,27.5' fill='black'/%3E%3C/svg%3E");
+}
+
+body,
+html {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    height: 100vh;
+    overflow: hidden;
+}
+
+.presentation-container {
+    height: 100vh;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+}
+
+.scene {
+    min-height: 100vh;
+    width: 100vw;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 10vh 0;
+}
+
+/* =========================================
+   SCENE BACKGROUND — dark with watermark
+   ========================================= */
+.scene-dark {
+    background-color: #141414;
+    position: relative;
+    overflow: hidden;
+}
+
+.scene-dark::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: var(--mask-left, auto);
+    right: var(--mask-right, auto);
+    transform: translateY(-50%);
+    width: 60vmin;
+    height: 60vmin;
+    max-width: 700px;
+    background: var(--bg-gradient);
+
+    --mask-scanlines: repeating-linear-gradient(
+        to bottom,
+        black 0, black 2px,
+        transparent 2px, transparent 4px
+    );
+    -webkit-mask-image: var(--mask-url, var(--svg-default)), var(--mask-scanlines);
+    -webkit-mask-size: contain, 100% 100%;
+    -webkit-mask-repeat: no-repeat, repeat;
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+
+    opacity: 0.25;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.scene-dark .scene-content {
+    position: relative;
+    z-index: 10;
+}
+
+/* =========================================
+   SCENE BACKGROUND — light with watermark
+   ========================================= */
+.scene-light {
+    background-color: var(--color-bg);
+    position: relative;
+    overflow: hidden;
+}
+
+.scene-light::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: var(--mask-left, auto);
+    right: var(--mask-right, auto);
+    transform: translateY(-50%);
+    width: 60vmin;
+    height: 60vmin;
+    max-width: 700px;
+    background: var(--bg-gradient);
+
+    --mask-scanlines: repeating-linear-gradient(
+        to bottom,
+        black 0, black 2px,
+        transparent 2px, transparent 4px
+    );
+    -webkit-mask-image: var(--mask-url, var(--svg-default)), var(--mask-scanlines);
+    -webkit-mask-size: contain, 100% 100%;
+    -webkit-mask-repeat: no-repeat, repeat;
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+
+    opacity: 0.35;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.scene-light .scene-content {
+    position: relative;
+    z-index: 10;
+}
+
+/* =========================================
+   LOGO
+   ========================================= */
+.company-logo {
+    position: fixed;
+    top: 2rem;
+    right: 0;
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    z-index: 100;
+}
+
+/* =========================================
+   LAYOUT SYSTEM
+   ========================================= */
+.scene-content {
+    display: flex;
+    width: 90%;
+    max-width: 1400px;
+    gap: 4rem;
+    z-index: 10;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all var(--transition-speed) ease-out;
+    box-sizing: border-box;
+    padding: 3rem;
+    border-radius: 24px;
+    background: var(--color-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+}
+
+.scene.is-active .scene-content {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.col-highlight { flex: 0.8; }
+
+.col-text {
+    flex: 1.2;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.col-media {
+    flex: 0.8;
+    align-items: center;
+    gap: 2rem;
+}
+
+.layout-reversed .col-media   { order: 1; }
+.layout-reversed .col-text    { order: 2; }
+.layout-reversed .col-highlight {
+    order: 3;
+    text-align: right;
+}
+
+.layout-image-only .col-highlight { display: none; }
+.layout-image-only .col-text      { flex: 1; }
+.layout-image-only .col-media     { flex: 1; }
+
+/* =========================================
+   COMPONENTS
+   ========================================= */
+h1.huge-highlight {
+    font-size: 4rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin: 0;
+    color: var(--color-accent);
+}
+
+.bubble {
+    width: 150px;
+    height: 150px;
+    background-color: var(--color-surface);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    position: relative;
+    overflow: hidden;
+}
+
+.bubble:hover {
+    transform: scale(1.05);
+    background-color: var(--color-hover);
+}
+
+.bubble img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.large-image {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.keyword {
+    font-weight: bold;
+    color: var(--color-accent);
+    border-bottom: 2px dashed var(--color-accent);
+    position: relative;
+    padding: 0 4px;
+}
+
+.line-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 20;
+}
+
+/* =========================================
+   MODALS
+   ========================================= */
+dialog {
+    border: none;
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 500px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    text-align: left;
+}
+
+dialog::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+}
+
+.close-modal {
+    margin-top: 1.5rem;
+    padding: 0.5rem 1rem;
+    background: #e2e8f0;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.modal-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 1.5rem auto;
+    display: block;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    border: 3px solid var(--color-accent);
+}
+
+/* =========================================
+   HERO
+   ========================================= */
+.hero {
+    color: var(--color-hover);
+    flex-direction: column;
+}
+
+.hero h1 {
+    font-size: 5rem;
+    margin-bottom: 1rem;
+}
+
+/* =========================================
+   TREE DIAGRAM
+   ========================================= */
+.tree {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.tree ul {
+    padding-top: 20px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    padding-left: 0;
+}
+
+.tree li {
+    text-align: center;
+    list-style-type: none;
+    position: relative;
+    padding: 20px 10px 0 10px;
+}
+
+.tree-node {
+    display: inline-block;
+    padding: 15px 25px;
+    background-color: #cbd5e1;
+    color: var(--color-text);
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.tree-node:hover {
+    transform: translateY(-3px);
+    background-color: var(--color-accent);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Connector lines */
+.tree li::before,
+.tree li::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 50%;
+    border-top: 2px solid var(--color-accent);
+    width: 50%;
+    height: 20px;
+}
+
+.tree li::after {
+    right: auto;
+    left: 50%;
+    border-left: 2px solid var(--color-accent);
+}
+
+.tree li:only-child::after,
+.tree li:only-child::before { display: none; }
+.tree li:only-child { padding-top: 0; }
+.tree li:first-child::before,
+.tree li:last-child::after { border: 0 none; }
+.tree li:last-child::before {
+    border-right: 2px solid var(--color-accent);
+    border-radius: 0 5px 0 0;
+}
+.tree li:first-child::after {
+    border-radius: 5px 0 0 0;
+}
+.tree ul::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: calc(50% - 1px);
+    border-left: 2px solid var(--color-accent);
+    width: 0;
+    height: 20px;
+}
+
+/* =========================================
+   PIPELINE FLOW
+   ========================================= */
+.layout-wide .scene-content.flex-column {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.pipeline-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 2rem;
+}
+
+.pipeline-flow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1100px;
+    position: relative;
+    padding: 40px 0;
+}
+
+.pipeline-flow::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--color-accent);
+    z-index: 1;
+    transform: translateY(-50%);
+}
+
+.flow-step {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+}
+
+.flow-node {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 1.5rem;
+    background: #cbd5e1;
+    color: var(--color-surface);
+    font-weight: bold;
+    border-radius: 12px;
+    text-decoration: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-align: center;
+    min-width: 140px;
+    border: 2px solid transparent;
+    position: relative;
+}
+
+.flow-node:hover {
+    transform: translateY(-5px);
+    background: white;
+    border-color: var(--color-primary);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.flow-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--color-primary);
+    font-weight: bold;
+}
+
+.flow-node::after {
+    content: '▶';
+    position: absolute;
+    right: -25px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-accent);
+    font-size: 12px;
+    pointer-events: none;
+}
+
+.flow-step:last-child .flow-node::after {
+    display: none;
+}
+
+@media (max-width: 900px) {
+    .pipeline-flow {
+        flex-direction: column;
+        gap: 3rem;
+    }
+    .pipeline-flow::before {
+        width: 2px;
+        height: 100%;
+        left: 50%;
+        top: 0;
+        transform: translateX(-50%);
+    }
+    .flow-node::after {
+        content: '▼';
+        right: auto;
+        bottom: -30px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+/* =========================================
+   DARK THEME UTILITIES
+   ========================================= */
+.theme-dark {
+    color: #ffffff;
+}
+
+.theme-dark .huge-highlight,
+.theme-dark h2 {
+    color: #ffffff;
+}
+
+.theme-dark .keyword {
+    color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
+}
+
+.theme-dark .scene-content {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+/* =========================================
+   TRACKER
+   ========================================= */
+.scene-tracker {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 1rem;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    z-index: 100;
+}
+
+.tracker-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #cbd5e1;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.tracker-dot:hover { background: #94a3b8; }
+
+.tracker-dot.is-active {
+    background: var(--color-accent);
+    transform: scale(1.4);
+}
+
+.tracker-dot::after {
+    content: attr(data-title);
+    position: absolute;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background: #1e293b;
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: bold;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.tracker-dot:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
