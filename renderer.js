@@ -109,6 +109,7 @@ function syncModalAvatar(trigger, modal) {
     if (scene.theme === 'dark') section.classList.add('theme-dark');
     if (scene.type === 'hero') section.classList.add('hero');
     if (scene.layout) section.classList.add(scene.layout);
+    if (scene.type === 'reversed') section.classList.add('layout-reversed');
     if (scene.bgClass) section.classList.add(scene.bgClass);
 
     // SVG background mask style
